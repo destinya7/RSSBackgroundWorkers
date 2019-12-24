@@ -35,20 +35,12 @@ namespace RSSFetcherService
         protected override void OnStop()
         {
             _logger.Debug("Service Stopped " + DateTime.Now);
-            TearDownConnection();
         }
 
         private void SetupConnectionToQueue()
         {
             _consumerService.SetupConnection();
             _consumerService.Consumer.Received += OnMessageReceived;
-        }
-
-        private void TearDownConnection()
-        {
-            _consumerService.Consumer.Received -= OnMessageReceived;
-            _consumerService.Channel.Close();
-            _consumerService.Connection.Close();
         }
 
         private void OnMessageReceived(object sender, BasicDeliverEventArgs e)
