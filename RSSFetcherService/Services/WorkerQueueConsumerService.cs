@@ -31,7 +31,7 @@ namespace RSSFetcherService.Services
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
 
-                _channel.QueueDeclare(queue: "worker_queue",
+                _channel.QueueDeclare(queue: "worker_queue1",
                                      durable: true,
                                      exclusive: false,
                                      autoDelete: false,
@@ -41,7 +41,7 @@ namespace RSSFetcherService.Services
                 properties.Persistent = true;
 
                 _consumer = new EventingBasicConsumer(_channel);
-                _channel.BasicConsume(queue: "worker_queue",
+                _channel.BasicConsume(queue: "worker_queue1",
                                      autoAck: false,
                                      consumer: _consumer);
             }
