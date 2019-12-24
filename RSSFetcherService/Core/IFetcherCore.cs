@@ -5,6 +5,6 @@ namespace RSSFetcherService.Core
 {
     public interface IFetcherCore
     {
-        Task<Channel> fetchChannel(string url);
+        Task<Channel> FetchChannel(string url);
     }
 }

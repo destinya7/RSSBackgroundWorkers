@@ -3,6 +3,7 @@ using Autofac;
 using RSSBackgroundWorkerBusiness.DAL;
 using RSSBackgroundWorkerBusiness.Repositories;
 using RSSFetcherService.Core;
+using RSSFetcherService.Services;
 using RSSFetcherService.Utils;
 
 namespace RSSFetcherService.Startup
@@ -25,8 +26,14 @@ namespace RSSFetcherService.Startup
                 .As<IRSSParser>();
             containerBuilder.RegisterType<HttpRSSClient>()
                 .As<IHttpRSSClient>();
+
             containerBuilder.RegisterType<FetcherCore>()
                 .As<IFetcherCore>();
+
+            containerBuilder.RegisterType<LoggerService>()
+                .As<ILoggerService>().SingleInstance();
+            containerBuilder.RegisterType<WorkerQueueConsumerService>()
+                .As<IWorkerQueueConsumerService>().SingleInstance();
 
             containerBuilder.RegisterType<RSSFetcherService>().AsSelf();
 

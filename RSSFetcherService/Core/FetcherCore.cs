@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RSSFetcherService.Core
 {
-    public class FetcherCore
+    public class FetcherCore : IFetcherCore
     {
         IChannelRepository _channelRepository;
         IArticleRepository _articleRepository;
