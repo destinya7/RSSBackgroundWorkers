@@ -23,6 +23,8 @@ namespace RSSFetcherService.Startup
 
             containerBuilder.RegisterType<RSSParser>()
                 .As<IRSSParser>();
+            containerBuilder.RegisterType<HttpRSSClient>()
+                .As<IHttpRSSClient>();
             containerBuilder.RegisterType<FetcherCore>()
                 .As<IFetcherCore>();
 
