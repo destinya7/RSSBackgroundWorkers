@@ -75,7 +75,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IMessageQueuePublisherService.cs" />
     <Compile Include="Services\IWorkerQueueConsumerService.cs" />
+    <Compile Include="Services\MessageQueuePublisherService.cs" />
     <Compile Include="Services\WorkerQueueConsumerService.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
     <Compile Include="Utils\HttpRSSClient.cs" />

@@ -34,6 +34,8 @@ namespace RSSFetcherService.Startup
                 .As<ILoggerService>().SingleInstance();
             containerBuilder.RegisterType<WorkerQueueConsumerService>()
                 .As<IWorkerQueueConsumerService>().SingleInstance();
+            containerBuilder.RegisterType<MessageQueuePublisherService>()
+                .As<IMessageQueuePublisherService>();
 
             containerBuilder.RegisterType<RSSFetcherService>().AsSelf();
 
