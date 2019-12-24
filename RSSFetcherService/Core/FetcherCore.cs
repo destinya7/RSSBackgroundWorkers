@@ -26,7 +26,7 @@ namespace RSSFetcherService.Core
             _rssParser = rssParser;
         }
 
-        public async Task<Channel> fetchChannel(string url)
+        public async Task<Channel> FetchChannel(string url)
         {
             Channel channel = null;
 
