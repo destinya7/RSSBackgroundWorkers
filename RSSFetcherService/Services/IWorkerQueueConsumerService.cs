@@ -10,5 +10,7 @@ namespace RSSFetcherService.Services
         EventingBasicConsumer Consumer { get; }
 
         IModel Channel { get; }
+
+        IConnection Connection { get; }
     }
 }

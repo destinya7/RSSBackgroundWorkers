@@ -54,5 +54,7 @@ namespace RSSFetcherService.Services
         public EventingBasicConsumer Consumer => _consumer;
 
         public IModel Channel => _channel;
+
+        public IConnection Connection => _connection;
     }
 }
