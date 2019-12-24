@@ -32,7 +32,7 @@ namespace RSSFetcherService.Core
 
             try
             {
-                channel = _channelRepository.GetChannelByURL(url);
+                channel = await _channelRepository.GetChannelByURL(url);
 
                 if (channel == null)
                 {
@@ -41,7 +41,7 @@ namespace RSSFetcherService.Core
                     _channelRepository.Insert(channel);
                     await _channelRepository.Save();
                 }
-                else if (channel.DateModified.Subtract(DateTime.Now) >
+                else if (DateTime.Now.Subtract(channel.DateModified) >
                     TimeSpan.FromHours(1.0))
                 {
                     string xmlString = await _httpRssClient.GetRSSXmlString(url);
