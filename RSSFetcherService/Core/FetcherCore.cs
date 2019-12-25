@@ -1,7 +1,9 @@
 ﻿using RSSBackgroundWorkerBusiness.Models;
 using RSSBackgroundWorkerBusiness.Repositories;
+using RSSFetcherService.Services;
 using RSSFetcherService.Utils;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RSSFetcherService.Core
@@ -12,18 +14,21 @@ namespace RSSFetcherService.Core
         IArticleRepository _articleRepository;
         IHttpRSSClient _httpRssClient;
         IRSSParser _rssParser;
+        ILoggerService _logger;
 
         public FetcherCore(
             IChannelRepository channelRepository,
             IArticleRepository articleRepository,
             IHttpRSSClient httpRssClient,
-            IRSSParser rssParser
+            IRSSParser rssParser,
+            ILoggerService logger
         )
         {
             _channelRepository = channelRepository;
             _articleRepository = articleRepository;
             _httpRssClient = httpRssClient;
             _rssParser = rssParser;
+            _logger = logger;
         }
 
         public async Task<Channel> FetchChannel(string url)
@@ -32,37 +37,92 @@ namespace RSSFetcherService.Core
 
             try
             {
+                _logger.Debug($"Fetching channel for url {url}");
+
                 channel = await _channelRepository.GetChannelByURL(url);
+
+                _logger.Debug($"Done fetching channel for url {url}");
 
                 if (channel == null)
                 {
+                    _logger.Debug($"Channel for url {url} not found. Fetching rss xml");
+
                     string xmlString = await _httpRssClient.GetRSSXmlString(url);
+
+                    _logger.Debug($"Done fetching rss xml for url {url}. Parsing xml");
+
                     channel = _rssParser.ParseRSS(xmlString);
+
+                    _logger.Debug($"Done parsing xml. Inserting new channel for url {url}");
+                    channel.RSS_URL = url;
                     _channelRepository.Insert(channel);
                     await _channelRepository.Save();
+
+                    _logger.Debug($"Done Inserting saving new channel for url {url}");
                 }
                 else if (DateTime.Now.Subtract(channel.DateModified) >
                     TimeSpan.FromHours(1.0))
                 {
+                    _logger.Debug($"Channel with url {url} is older than an hour. Fetching rss xml");
+
                     string xmlString = await _httpRssClient.GetRSSXmlString(url);
+
+                    _logger.Debug($"Done fetching rss xml for url {url}. Parsing xml");
+
                     Channel fetchedChannel = _rssParser.ParseRSS(xmlString);
 
-                    channel.Title = fetchedChannel.Title;
-                    channel.Description = fetchedChannel.Description;
-                    channel.Link = fetchedChannel.Link;
-                    channel.ChannelImage = fetchedChannel.ChannelImage;
-                    channel.Articles = fetchedChannel.Articles;
+                    _logger.Debug($"Done parsing xml. Updating existing channel for url {url}");
 
-                    _channelRepository.Update(channel);
-                    await _channelRepository.Save();
+                    channel = await UpdateChannel(channel, fetchedChannel);
+                    
+                    _logger.Debug($"Done updating existing channel with url {url}");
+
                 }
             }
             catch (Exception e)
             {
+                _logger.Debug(e.ToString());
                 throw e;
             }
 
             return channel;
+        }
+
+        private async Task<Channel> UpdateChannel(Channel oldChannel, Channel updatedChannel)
+        {
+            oldChannel.Title = updatedChannel.Title;
+            oldChannel.Description = updatedChannel.Description;
+            oldChannel.Link = updatedChannel.Link;
+            oldChannel.ChannelImage = updatedChannel.ChannelImage;
+
+            _channelRepository.Update(oldChannel);
+
+            foreach (var article in updatedChannel.Articles)
+            {
+                var existingArticle =
+                    await _articleRepository.GetArticleByURL(article.Link);
+                
+                if(existingArticle == null)
+                {
+                    article.ChannelId = oldChannel.Id;
+                    article.Channel = oldChannel;
+                    _articleRepository.Insert(article);
+                    _logger.Debug($"New Article with url {article.Link} Created");
+                }
+                else
+                {
+                    existingArticle.Title = article.Title;
+                    existingArticle.Description = article.Description;
+                    existingArticle.PubDate = article.PubDate;
+                    _articleRepository.Update(existingArticle);
+                    _logger.Debug($"Article with url {article.Link} Updated");
+                }
+            }
+
+            await _articleRepository.Save();
+            await _channelRepository.Save();
+
+            return updatedChannel;
         }
     }
 }
