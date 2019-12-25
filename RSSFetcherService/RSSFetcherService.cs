@@ -2,6 +2,7 @@
 using System.ServiceProcess;
 using System.Text;
 using RabbitMQ.Client.Events;
+using RSSBackgroundWorkerBusiness.Models;
 using RSSFetcherService.Core;
 using RSSFetcherService.Services;
 
@@ -43,13 +44,27 @@ namespace RSSFetcherService
             _consumerService.Consumer.Received += OnMessageReceived;
         }
 
-        private void OnMessageReceived(object sender, BasicDeliverEventArgs e)
+        private async void OnMessageReceived(object sender, BasicDeliverEventArgs e)
         {
             var body = e.Body;
             var message = Encoding.UTF8.GetString(body);
 
-            _consumerService.Channel.BasicAck(e.DeliveryTag, false);
-            _logger.Debug($"Message Received: {message} - {DateTime.Now}");
+            try
+            {
+                _logger.Debug($"Message Received: {message}. Fetching channel");
+
+                Channel channel = await _fetcherCore.FetchChannel(message);
+
+                _logger.Debug($"Done Fetching Channel");
+
+                _consumerService.Channel.BasicAck(e.DeliveryTag, false);
+
+                _logger.Debug($"Sent Acknowledgement for {message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex.ToString());
+            }
         }
     }
 }
