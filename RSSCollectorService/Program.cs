@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using RSSCollectorService.Startup;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RSSCollectorService
 {
@@ -14,10 +10,12 @@ namespace RSSCollectorService
         /// </summary>
         static void Main()
         {
+            Bootstrapper.Bootstrap();
+
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                Bootstrapper.Resolve<RSSCollectorService>()
             };
             ServiceBase.Run(ServicesToRun);
         }

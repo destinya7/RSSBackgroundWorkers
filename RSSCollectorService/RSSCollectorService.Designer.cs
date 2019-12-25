@@ -1,6 +1,6 @@
 ﻿namespace RSSCollectorService
 {
-    partial class Service1
+    partial class RSSCollectorService
     {
         /// <summary> 
         /// Required designer variable.

@@ -4,9 +4,9 @@ using RSSBackgroundWorkerBusiness.DAL;
 
 namespace RSSCollectorService
 {
-    public partial class Service1 : ServiceBase
+    public partial class RSSCollectorService : ServiceBase
     {
-        public Service1()
+        public RSSCollectorService()
         {
             InitializeComponent();
         }
