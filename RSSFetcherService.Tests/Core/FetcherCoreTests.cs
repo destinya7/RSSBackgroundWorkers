@@ -7,6 +7,7 @@ using RSSBackgroundWorkerBusiness.Models;
 using RSSFetcherService.Core;
 using System.Threading.Tasks;
 using System;
+using RSSFetcherService.Services;
 
 namespace RSSFetcherService.Tests.Core
 {
@@ -47,6 +48,7 @@ namespace RSSFetcherService.Tests.Core
             Mock<IArticleRepository> articleRepoMoq = new Mock<IArticleRepository>();
             Mock<IHttpRSSClient> httpRssClientMoq = new Mock<IHttpRSSClient>();
             Mock<IRSSParser> rssParserMoq = new Mock<IRSSParser>();
+            Mock<ILoggerService> loggerServiceMoq = new Mock<ILoggerService>();
             bool isChannelSaved = false;
 
             httpRssClientMoq
@@ -77,7 +79,8 @@ namespace RSSFetcherService.Tests.Core
                 channelRepoMoq.Object,
                 articleRepoMoq.Object,
                 httpRssClientMoq.Object,
-                rssParserMoq.Object);
+                rssParserMoq.Object,
+                loggerServiceMoq.Object);
 
             await fetcherCore.FetchChannel("http://www.channel4.com");
 
@@ -91,6 +94,7 @@ namespace RSSFetcherService.Tests.Core
             Mock<IArticleRepository> articleRepoMoq = new Mock<IArticleRepository>();
             Mock<IHttpRSSClient> httpRssClientMoq = new Mock<IHttpRSSClient>();
             Mock<IRSSParser> rssParserMoq = new Mock<IRSSParser>();
+            Mock<ILoggerService> loggerServiceMoq = new Mock<ILoggerService>();
             Channel channel = new Channel
             {
                 Id = 1,
@@ -121,7 +125,8 @@ namespace RSSFetcherService.Tests.Core
                 channelRepoMoq.Object,
                 articleRepoMoq.Object,
                 httpRssClientMoq.Object,
-                rssParserMoq.Object);
+                rssParserMoq.Object,
+                loggerServiceMoq.Object);
 
             await fetcherCore.FetchChannel("http://www.channel1.com");
 
@@ -135,6 +140,7 @@ namespace RSSFetcherService.Tests.Core
             Mock<IArticleRepository> articleRepoMoq = new Mock<IArticleRepository>();
             Mock<IHttpRSSClient> httpRssClientMoq = new Mock<IHttpRSSClient>();
             Mock<IRSSParser> rssParserMoq = new Mock<IRSSParser>();
+            Mock<ILoggerService> loggerServiceMoq = new Mock<ILoggerService>();
             Channel channel = new Channel
             {
                 Id = 1,
@@ -161,7 +167,8 @@ namespace RSSFetcherService.Tests.Core
                 channelRepoMoq.Object,
                 articleRepoMoq.Object,
                 httpRssClientMoq.Object,
-                rssParserMoq.Object);
+                rssParserMoq.Object,
+                loggerServiceMoq.Object);
 
             var resultChannel = await fetcherCore.FetchChannel("http://www.channel1.com");
 
