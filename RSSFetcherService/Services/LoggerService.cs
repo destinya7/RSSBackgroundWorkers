@@ -43,7 +43,7 @@ namespace RSSFetcherService.Services
                 // Create a file to write to.   
                 using (StreamWriter sw = File.CreateText(filepath))
                 {
-                    sw.WriteLine(Message);
+                    sw.WriteLine(DateTime.Now + " " + Message);
                 }
             }
             else
