@@ -4,6 +4,7 @@ using System.IO;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using RSSBackgroundWorkerBusiness.Models;
+using RSSFetcherService.Services;
 
 namespace RSSFetcherService.Utils
 {
@@ -22,7 +23,9 @@ namespace RSSFetcherService.Utils
                 channel = new Channel
                 {
                     Title = feed.Title?.Text,
-                    Link = feed.BaseUri?.AbsoluteUri,
+                    Link = feed.Links.Count > 0
+                        ? feed.Links[0].Uri.AbsoluteUri
+                        : string.Empty,
                     Description = feed.Description?.Text,
                     ChannelImage = new Channel.Image
                     {
@@ -33,12 +36,15 @@ namespace RSSFetcherService.Utils
 
                 foreach (var item in feed.Items)
                 {
-                    channel.Articles.Add(new Article
+                    var article = new Article
                     {
                         Title = item.Title?.Text,
-                        Link = item.BaseUri?.AbsoluteUri,
-                        PubDate = item.PublishDate.UtcDateTime,
-                    });
+                        Link = item.Links.Count > 0
+                            ? item.Links[0].Uri.AbsoluteUri
+                            : string.Empty,
+                        PubDate = item.PublishDate.UtcDateTime
+                    };
+                    channel.Articles.Add(article);
                 }
             }
             catch (Exception e)
