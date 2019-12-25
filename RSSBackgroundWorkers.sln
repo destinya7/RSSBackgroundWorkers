@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSSCollectorService", "RSSC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSSFetcherService.Tests", "RSSFetcherService.Tests\RSSFetcherService.Tests.csproj", "{A29BA423-13FA-4D42-9089-D9ADA2F564DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSSCollectorService.Tests", "RSSCollectorService.Tests\RSSCollectorService.Tests.csproj", "{B0EC7270-DF1F-4A17-849D-FCBDE5FD270B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A29BA423-13FA-4D42-9089-D9ADA2F564DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A29BA423-13FA-4D42-9089-D9ADA2F564DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A29BA423-13FA-4D42-9089-D9ADA2F564DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0EC7270-DF1F-4A17-849D-FCBDE5FD270B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0EC7270-DF1F-4A17-849D-FCBDE5FD270B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0EC7270-DF1F-4A17-849D-FCBDE5FD270B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0EC7270-DF1F-4A17-849D-FCBDE5FD270B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
