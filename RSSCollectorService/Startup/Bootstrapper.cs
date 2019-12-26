@@ -22,6 +22,8 @@ namespace RSSCollectorService.Startup
 
             containerBuilder.RegisterType<WorkerQueuePublisher>()
                 .As<IWorkerQueuePublisher>();
+            containerBuilder.RegisterType<LoggerService>()
+                .As<ILoggerService>();
 
             containerBuilder.RegisterType<RSSCollectorService>().AsSelf();
 
