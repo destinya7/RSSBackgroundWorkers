@@ -60,11 +60,11 @@ namespace RSSFetcherService
 
                 _logger.Debug($"Done Fetching Channel");
 
-                _consumerService.Channel.BasicAck(e.DeliveryTag, false);
-
                 _logger.Debug($"Sent Acknowledgement for {message}. Publishing Channel Updates");
 
                 PublishArticles(channel.Articles);
+
+                _consumerService.Channel.BasicAck(e.DeliveryTag, false);
 
                 _logger.Debug($"Channel Updates Sent");
             }
@@ -89,16 +89,21 @@ namespace RSSFetcherService
 
         private void SetupConnectionToQueues()
         {
+            _logger.Debug("Setting up connections to queue");
             _consumerService.SetupConnection();
             _publisherService.SetupConnection();
             _consumerService.Consumer.Received += OnMessageReceived;
+            _consumerService.StartListening();
+            _logger.Debug("Done setting up connections to queue");
         }
 
         private void CloseConnectionToQueues()
         {
+            _logger.Debug("Closing connections to queue");
             _consumerService.Consumer.Received -= OnMessageReceived;
             _consumerService.CloseConnection();
             _publisherService.CloseConnection();
+            _logger.Debug("Done closing connections to queue");
         }
     }
 }
