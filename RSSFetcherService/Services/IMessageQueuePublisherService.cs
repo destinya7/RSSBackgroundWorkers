@@ -2,6 +2,8 @@
 {
     public interface IMessageQueuePublisherService
     {
+        void SetupConnection();
+
         void PublishMessage(string message);
     }
 }
