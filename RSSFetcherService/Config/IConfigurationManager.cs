@@ -3,5 +3,7 @@
     public interface IConfigurationManager
     {
         QueueVariable GetWorkerQueueEnvironmentVariable();
+
+        QueueVariable GetMessageQueueEnvironmentVariable();
     }
 }

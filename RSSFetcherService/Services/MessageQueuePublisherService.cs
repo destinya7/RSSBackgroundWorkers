@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using RabbitMQ.Client;
+using RSSFetcherService.Config;
 
 namespace RSSFetcherService.Services
 {
@@ -9,20 +10,28 @@ namespace RSSFetcherService.Services
         private IConnection _connection;
         private IModel _channel;
 
-        ILoggerService _logger;
+        private ILoggerService _logger;
+        private IConfigurationManager _configurationManager;
 
-        public MessageQueuePublisherService(ILoggerService logger)
+        public MessageQueuePublisherService(
+            ILoggerService logger,
+            IConfigurationManager configurationManager
+        )
         {
             _logger = logger;
+            _configurationManager = configurationManager;
         }
 
         public void SetupConnection()
         {
+            var credential =
+                _configurationManager.GetWorkerQueueEnvironmentVariable();
+
             var factory = new ConnectionFactory()
             {
-                HostName = "128.199.155.230",
-                UserName = "dev",
-                Password = "dev123"
+                HostName = credential.Hostname,
+                UserName = credential.Username,
+                Password = credential.Password
             };
 
             try
@@ -30,7 +39,7 @@ namespace RSSFetcherService.Services
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
 
-                _channel.QueueDeclare(queue: "message_queue",
+                _channel.QueueDeclare(queue: credential.QueueName,
                                      durable: true,
                                      exclusive: false,
                                      autoDelete: false,
