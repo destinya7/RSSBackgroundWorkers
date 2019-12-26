@@ -4,6 +4,8 @@
     {
         void SetupConnection();
 
+        void CloseConnection();
+
         void PublishMessage(string message);
     }
 }

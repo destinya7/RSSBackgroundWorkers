@@ -51,6 +51,12 @@ namespace RSSFetcherService.Services
             }
         }
 
+        public void CloseConnection()
+        {
+            if (!_channel.IsClosed) _channel.Close();
+            if (_connection != null) _connection.Close();
+        }
+
         public EventingBasicConsumer Consumer => _consumer;
 
         public IModel Channel => _channel;

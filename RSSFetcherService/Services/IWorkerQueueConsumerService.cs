@@ -7,6 +7,8 @@ namespace RSSFetcherService.Services
     {
         void SetupConnection();
 
+        void CloseConnection();
+
         EventingBasicConsumer Consumer { get; }
 
         IModel Channel { get; }

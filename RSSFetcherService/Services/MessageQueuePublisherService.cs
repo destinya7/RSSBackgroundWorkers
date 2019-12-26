@@ -42,6 +42,13 @@ namespace RSSFetcherService.Services
             }
         }
 
+        public void CloseConnection()
+        {
+            if (!_channel.IsClosed) _channel.Close();
+
+            if (_connection != null) _connection.Close();
+        }
+
         public void PublishMessage(string message)
         {
             byte[] body = Encoding.UTF8.GetBytes(message);
