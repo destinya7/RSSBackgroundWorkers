@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 
-namespace RSSFetcherService.Utils
+namespace RSSFetcherService.Services
 {
     public class HttpRSSClient : IHttpRSSClient
     {

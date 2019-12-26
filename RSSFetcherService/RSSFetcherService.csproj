@@ -93,8 +93,8 @@
     <Compile Include="Services\MessageQueuePublisherService.cs" />
     <Compile Include="Services\WorkerQueueConsumerService.cs" />
     <Compile Include="Startup\Bootstrapper.cs" />
-    <Compile Include="Utils\HttpRSSClient.cs" />
-    <Compile Include="Utils\IHttpRSSClient.cs" />
+    <Compile Include="Services\HttpRSSClient.cs" />
+    <Compile Include="Services\IHttpRSSClient.cs" />
     <Compile Include="Services\ILoggerService.cs" />
     <Compile Include="Utils\IMessageConverter.cs" />
     <Compile Include="Utils\IRSSParser.cs" />

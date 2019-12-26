@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace RSSFetcherService.Utils
+namespace RSSFetcherService.Services
 {
     public interface IHttpRSSClient
     {
