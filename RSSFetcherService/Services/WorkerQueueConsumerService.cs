@@ -36,19 +36,24 @@ namespace RSSFetcherService.Services
                                      exclusive: false,
                                      autoDelete: false,
                                      arguments: null);
+                _channel.BasicQos(0, 1, false);
 
                 var properties = _channel.CreateBasicProperties();
                 properties.Persistent = true;
 
                 _consumer = new EventingBasicConsumer(_channel);
-                _channel.BasicConsume(queue: "worker_queue1",
-                                     autoAck: false,
-                                     consumer: _consumer);
             }
             catch (Exception e)
             {
                 _logger.Debug(e.ToString());
             }
+        }
+
+        public void StartListening()
+        {
+            _channel.BasicConsume(queue: "worker_queue1",
+                                  autoAck: false,
+                                  consumer: _consumer);
         }
 
         public void CloseConnection()
