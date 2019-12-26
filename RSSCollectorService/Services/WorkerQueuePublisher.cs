@@ -41,9 +41,9 @@ namespace RSSCollectorService.Services
             }
         }
 
-        public void PublishUrl(string url)
+        public void PublishMessage(string message)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

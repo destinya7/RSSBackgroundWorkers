@@ -4,6 +4,6 @@
     {
         void SetupConnection();
 
-        void PublishUrl(string url);
+        void PublishMessage(string message);
     }
 }

@@ -24,7 +24,7 @@ namespace RSSCollectorService.Core
 
             foreach(var channel in channels)
             {
-                _workerQueuePublisher.PublishUrl(channel.RSS_URL);
+                _workerQueuePublisher.PublishMessage(channel.RSS_URL);
             }
         }
     }
