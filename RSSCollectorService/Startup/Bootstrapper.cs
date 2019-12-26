@@ -2,6 +2,7 @@
 using Autofac;
 using RSSBackgroundWorkerBusiness.DAL;
 using RSSBackgroundWorkerBusiness.Repositories;
+using RSSCollectorService.Services;
 
 namespace RSSCollectorService.Startup
 {
@@ -18,6 +19,9 @@ namespace RSSCollectorService.Startup
                 .As<IChannelRepository>();
             containerBuilder.RegisterType<ArticleRepository>()
                 .As<IArticleRepository>();
+
+            containerBuilder.RegisterType<WorkerQueuePublisher>()
+                .As<IWorkerQueuePublisher>();
 
             containerBuilder.RegisterType<RSSCollectorService>().AsSelf();
 
