@@ -2,6 +2,8 @@
 {
     public interface IWorkerQueuePublisher
     {
+        void SetupConnection();
+
         void PublishUrl(string url);
     }
 }
