@@ -1,29 +1,38 @@
 ﻿using System;
-using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RSSFetcherService.Config;
 
 namespace RSSFetcherService.Services
 {
     public class WorkerQueueConsumerService : IWorkerQueueConsumerService
     {
-        ILoggerService _logger;
         private IConnection _connection;
         private IModel _channel;
         private EventingBasicConsumer _consumer;
 
-        public WorkerQueueConsumerService(ILoggerService logger)
+        ILoggerService _logger;
+        IConfigurationManager _configurationManager;
+
+        public WorkerQueueConsumerService(
+            ILoggerService logger,
+            IConfigurationManager configurationManager
+        )
         {
             _logger = logger;
+            _configurationManager = configurationManager;
         }
 
         public void SetupConnection()
         {
+            var credential = 
+                _configurationManager.GetWorkerQueueEnvironmentVariable();
+
             var factory = new ConnectionFactory()
             {
-                HostName = "128.199.155.230",
-                UserName = "dev",
-                Password = "dev123"
+                HostName = credential.Hostname,
+                UserName = credential.Username,
+                Password = credential.Password
             };
 
             try
