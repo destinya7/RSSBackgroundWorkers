@@ -54,7 +54,8 @@
     <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.5.1.2\lib\net451\RabbitMQ.Client.dll</HintPath>
     </Reference>
-    <Reference Include="RSSBackgroundWorkerBusiness">
+    <Reference Include="RSSBackgroundWorkerBusiness, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\RSSBackgroundWorkerBusiness\RSSBackgroundWorkerBusiness\bin\Debug\RSSBackgroundWorkerBusiness.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -72,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ServiceVariable.cs" />
     <Compile Include="Core\FetcherCore.cs" />
     <Compile Include="Core\IFetcherCore.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -88,6 +90,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Config\ConfigurationManager.cs" />
+    <Compile Include="Config\IConfigurationManager.cs" />
     <Compile Include="Services\IMessageQueuePublisherService.cs" />
     <Compile Include="Services\IWorkerQueueConsumerService.cs" />
     <Compile Include="Services\MessageQueuePublisherService.cs" />
