@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using RabbitMQ.Client;
 
 namespace RSSCollectorService.Services
@@ -29,11 +30,13 @@ namespace RSSCollectorService.Services
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
 
-                _channel.QueueDeclare(queue: "message_queue",
+                _channel.QueueDeclare(queue: "worker_queue1",
                                      durable: true,
                                      exclusive: false,
                                      autoDelete: false,
                                      arguments: null);
+                var properties = _channel.CreateBasicProperties();
+                properties.Persistent = true;
             }
             catch (Exception e)
             {
@@ -43,7 +46,12 @@ namespace RSSCollectorService.Services
 
         public void PublishMessage(string message)
         {
-            
+            byte[] body = Encoding.UTF8.GetBytes(message);
+            _channel.BasicPublish(
+                exchange: "",
+                routingKey: "worker_queue1",
+                basicProperties: null,
+                body: body);
         }
     }
 }
