@@ -90,6 +90,8 @@ namespace RSSFetcherService.Core
 
         private async Task<Channel> UpdateChannel(Channel oldChannel, Channel updatedChannel)
         {
+            List<Article> newArticles = new List<Article>();
+
             oldChannel.Title = updatedChannel.Title;
             oldChannel.Description = updatedChannel.Description;
             oldChannel.Link = updatedChannel.Link;
@@ -106,7 +108,10 @@ namespace RSSFetcherService.Core
                 {
                     article.ChannelId = oldChannel.Id;
                     article.Channel = oldChannel;
+
                     _articleRepository.Insert(article);
+                    newArticles.Add(article);
+
                     _logger.Debug($"New Article with url {article.Link} Created");
                 }
                 else
@@ -114,13 +119,18 @@ namespace RSSFetcherService.Core
                     existingArticle.Title = article.Title;
                     existingArticle.Description = article.Description;
                     existingArticle.PubDate = article.PubDate;
+
                     _articleRepository.Update(existingArticle);
+                    newArticles.Add(existingArticle);
+
                     _logger.Debug($"Article with url {article.Link} Updated");
                 }
             }
 
             await _articleRepository.Save();
             await _channelRepository.Save();
+
+            updatedChannel.Articles = newArticles;
 
             return updatedChannel;
         }
