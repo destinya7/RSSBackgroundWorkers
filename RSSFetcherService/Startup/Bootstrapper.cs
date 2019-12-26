@@ -24,18 +24,20 @@ namespace RSSFetcherService.Startup
 
             containerBuilder.RegisterType<RSSParser>()
                 .As<IRSSParser>();
+            containerBuilder.RegisterType<ArticleMessageConverter>()
+                .As<IArticleMessageConverter>();
+
             containerBuilder.RegisterType<HttpRSSClient>()
                 .As<IHttpRSSClient>();
-
-            containerBuilder.RegisterType<FetcherCore>()
-                .As<IFetcherCore>();
-
             containerBuilder.RegisterType<LoggerService>()
                 .As<ILoggerService>().SingleInstance();
             containerBuilder.RegisterType<WorkerQueueConsumerService>()
                 .As<IWorkerQueueConsumerService>().SingleInstance();
             containerBuilder.RegisterType<MessageQueuePublisherService>()
                 .As<IMessageQueuePublisherService>();
+
+            containerBuilder.RegisterType<FetcherCore>()
+                .As<IFetcherCore>();
 
             containerBuilder.RegisterType<RSSFetcherService>().AsSelf();
 
