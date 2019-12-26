@@ -4,10 +4,10 @@ namespace RSSFetcherService.Config
 {
     public class ConfigurationManager : IConfigurationManager
     {
-        private const string WorkerQueueUsername = "wq_user";
-        private const string WorkerQueuePassword = "wq_pass";
-        private const string WorkerQueueHostname = "wq_host";
-        private const string WorkerQueuePort = "wq_port";
+        private const string WorkerQueueUsername = "RSS_WQ_USER";
+        private const string WorkerQueuePassword = "RSS_WQ_PASS";
+        private const string WorkerQueueHostname = "RSS_WQ_HOST";
+        private const string WorkerQueuePort = "RSS_WQ_PORT";
 
         public ServiceVariable GetWorkerQueueEnvironmentVariable()
         {
