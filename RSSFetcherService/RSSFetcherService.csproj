@@ -96,6 +96,8 @@
     <Compile Include="Services\HttpRSSClient.cs" />
     <Compile Include="Services\IHttpRSSClient.cs" />
     <Compile Include="Services\ILoggerService.cs" />
+    <Compile Include="Utils\ArticleMessageConverter.cs" />
+    <Compile Include="Utils\IArticleMessageConverter.cs" />
     <Compile Include="Utils\IMessageConverter.cs" />
     <Compile Include="Utils\IRSSParser.cs" />
     <Compile Include="Services\LoggerService.cs" />
