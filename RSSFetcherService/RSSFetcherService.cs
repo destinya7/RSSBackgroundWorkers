@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Text;
 using RabbitMQ.Client.Events;
 using RSSBackgroundWorkerBusiness.Models;
 using RSSFetcherService.Core;
 using RSSFetcherService.Services;
+using RSSFetcherService.Utils;
 
 namespace RSSFetcherService
 {
@@ -13,11 +15,15 @@ namespace RSSFetcherService
         private IWorkerQueueConsumerService _consumerService;
         private IFetcherCore _fetcherCore;
         private ILoggerService _logger;
+        private IMessageQueuePublisherService _publisherService;
+        private IArticleMessageConverter _articleMessageConverter;
 
         public RSSFetcherService(
             IWorkerQueueConsumerService consumerService,
             IFetcherCore fetcherCore,
-            ILoggerService logger
+            ILoggerService logger,
+            IMessageQueuePublisherService publisherService,
+            IArticleMessageConverter articleMessageConverter
         )
         {
             InitializeComponent();
@@ -25,23 +31,19 @@ namespace RSSFetcherService
             _consumerService = consumerService;
             _fetcherCore = fetcherCore;
             _logger = logger;
+            _publisherService = publisherService;
+            _articleMessageConverter = articleMessageConverter;
         }
 
         protected override void OnStart(string[] args)
         {
             _logger.Debug("Service Start " + DateTime.Now);
-            SetupConnectionToQueue();
+            SetupConnectionToQueues();
         }
 
         protected override void OnStop()
         {
             _logger.Debug("Service Stopped " + DateTime.Now);
-        }
-
-        private void SetupConnectionToQueue()
-        {
-            _consumerService.SetupConnection();
-            _consumerService.Consumer.Received += OnMessageReceived;
         }
 
         private async void OnMessageReceived(object sender, BasicDeliverEventArgs e)
@@ -59,12 +61,36 @@ namespace RSSFetcherService
 
                 _consumerService.Channel.BasicAck(e.DeliveryTag, false);
 
-                _logger.Debug($"Sent Acknowledgement for {message}");
+                _logger.Debug($"Sent Acknowledgement for {message}. Publishing Channel Updates");
+
+                PublishArticles(channel.Articles);
+
+                _logger.Debug($"Channel Updates Sent");
             }
             catch (Exception ex)
             {
                 _logger.Debug(ex.ToString());
             }
+        }
+
+        private void PublishArticles(List<Article> articles)
+        {
+            foreach(var article in articles)
+            {
+                var jsonString =
+                    _articleMessageConverter.SerializeJson(article);
+
+                _logger.Debug($"Sending Article {jsonString}");
+
+                _publisherService.PublishMessage(jsonString);
+            }
+        }
+
+        private void SetupConnectionToQueues()
+        {
+            _consumerService.SetupConnection();
+            _publisherService.SetupConnection();
+            _consumerService.Consumer.Received += OnMessageReceived;
         }
     }
 }
