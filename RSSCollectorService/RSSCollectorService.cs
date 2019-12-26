@@ -11,16 +11,20 @@ namespace RSSCollectorService
 
         private ICollectorCore _collectorCore;
         private ILoggerService _logger;
+        private IWorkerQueuePublisher _publisherService;
 
         public RSSCollectorService(
             ICollectorCore collectorCore,
-            ILoggerService logger
+            ILoggerService logger,
+            IWorkerQueuePublisher publisherService
         )
         {
             InitializeComponent();
 
             _collectorCore = collectorCore;
             _logger = logger;
+            _publisherService = publisherService;
+
             _timer = new Timer();
         }
 
@@ -28,15 +32,19 @@ namespace RSSCollectorService
         {
             _logger.Debug("Service Started");
 
+            _publisherService.SetupConnection();
+
             _timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
-            _timer.Interval = 216000000;
+            _timer.Interval = 30000;
             _timer.Enabled = true;
             _timer.Start();
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            _logger.Debug("Collecting Urls");
             _collectorCore.CollectUrls();
+            _logger.Debug("Done Collecting Urls");
         }
 
         protected override void OnStop()
