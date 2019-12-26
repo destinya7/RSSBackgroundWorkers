@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\QueueVariable.cs" />
     <Compile Include="Config\ServiceVariable.cs" />
     <Compile Include="Core\FetcherCore.cs" />
     <Compile Include="Core\IFetcherCore.cs" />

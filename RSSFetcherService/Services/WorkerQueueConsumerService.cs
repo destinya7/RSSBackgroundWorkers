@@ -40,7 +40,7 @@ namespace RSSFetcherService.Services
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
 
-                _channel.QueueDeclare(queue: "worker_queue1",
+                _channel.QueueDeclare(queue: credential.QueueName,
                                      durable: true,
                                      exclusive: false,
                                      autoDelete: false,

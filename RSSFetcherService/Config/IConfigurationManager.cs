@@ -2,6 +2,6 @@
 {
     public interface IConfigurationManager
     {
-        ServiceVariable GetWorkerQueueEnvironmentVariable();
+        QueueVariable GetWorkerQueueEnvironmentVariable();
     }
 }
