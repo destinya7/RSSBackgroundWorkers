@@ -10,9 +10,9 @@ namespace RSSCollectorService.Services
 
         private ILoggerService _logger;
 
-        public WorkerQueuePublisher()
+        public WorkerQueuePublisher(ILoggerService logger)
         {
-
+            _logger = logger;
         }
 
         public void SetupConnection()
