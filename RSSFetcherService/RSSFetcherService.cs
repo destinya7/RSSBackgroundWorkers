@@ -91,9 +91,13 @@ namespace RSSFetcherService
         {
             _logger.Debug("Setting up connections to queue");
             _consumerService.SetupConnection();
+            _logger.Debug("Done setting connection to worker queue");
             _publisherService.SetupConnection();
+            _logger.Debug("Done setting connection to message queue");
             _consumerService.Consumer.Received += OnMessageReceived;
+            _logger.Debug("Done attaching listener for worker queue");
             _consumerService.StartListening();
+            _logger.Debug("Starting to listen");
             _logger.Debug("Done setting up connections to queue");
         }
 
