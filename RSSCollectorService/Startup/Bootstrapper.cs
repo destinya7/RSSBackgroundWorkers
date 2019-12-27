@@ -4,6 +4,7 @@ using RSSBackgroundWorkerBusiness.DAL;
 using RSSBackgroundWorkerBusiness.Repositories;
 using RSSCollectorService.Core;
 using RSSCollectorService.Services;
+using RSSFetcherService.Config;
 
 namespace RSSCollectorService.Startup
 {
@@ -25,6 +26,9 @@ namespace RSSCollectorService.Startup
                 .As<IWorkerQueuePublisher>().SingleInstance();
             containerBuilder.RegisterType<LoggerService>()
                 .As<ILoggerService>();
+
+            containerBuilder.RegisterType<AppConfigManager>()
+                .As<IAppConfigManager>();
 
             containerBuilder.RegisterType<CollectorCore>()
                 .As<ICollectorCore>();

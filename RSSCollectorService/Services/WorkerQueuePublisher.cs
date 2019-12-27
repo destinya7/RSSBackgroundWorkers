@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using RabbitMQ.Client;
+using RSSFetcherService.Config;
 
 namespace RSSCollectorService.Services
 {
@@ -10,19 +11,28 @@ namespace RSSCollectorService.Services
         private IModel _channel;
 
         private ILoggerService _logger;
+        private IAppConfigManager _configurationManager;
 
-        public WorkerQueuePublisher(ILoggerService logger)
+        private QueueVariable _credentials;
+
+        public WorkerQueuePublisher(
+            ILoggerService logger,
+            IAppConfigManager configurationManager
+        )
         {
             _logger = logger;
+            _configurationManager = configurationManager;
         }
 
         public void SetupConnection()
         {
+            _credentials =
+                _configurationManager.GetWorkerQueueEnvironmentVariable();
             var factory = new ConnectionFactory()
             {
-                HostName = "128.199.155.230",
-                UserName = "dev",
-                Password = "dev123"
+                HostName = _credentials.Hostname,
+                UserName = _credentials.Username,
+                Password = _credentials.Password
             };
 
             try
@@ -30,7 +40,7 @@ namespace RSSCollectorService.Services
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
 
-                _channel.QueueDeclare(queue: "worker_queue1",
+                _channel.QueueDeclare(queue: _credentials.QueueName,
                                      durable: true,
                                      exclusive: false,
                                      autoDelete: false,
@@ -49,7 +59,7 @@ namespace RSSCollectorService.Services
             byte[] body = Encoding.UTF8.GetBytes(message);
             _channel.BasicPublish(
                 exchange: "",
-                routingKey: "worker_queue1",
+                routingKey: _credentials.QueueName,
                 basicProperties: null,
                 body: body);
         }
