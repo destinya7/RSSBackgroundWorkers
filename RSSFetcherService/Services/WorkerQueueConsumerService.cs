@@ -12,11 +12,11 @@ namespace RSSFetcherService.Services
         private EventingBasicConsumer _consumer;
 
         ILoggerService _logger;
-        IConfigurationManager _configurationManager;
+        IAppConfigManager _configurationManager;
 
         public WorkerQueueConsumerService(
             ILoggerService logger,
-            IConfigurationManager configurationManager
+            IAppConfigManager configurationManager
         )
         {
             _logger = logger;

@@ -1,6 +1,6 @@
 ﻿namespace RSSFetcherService.Config
 {
-    public interface IConfigurationManager
+    public interface IAppConfigManager
     {
         QueueVariable GetWorkerQueueEnvironmentVariable();
 

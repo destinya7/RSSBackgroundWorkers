@@ -11,11 +11,11 @@ namespace RSSFetcherService.Services
         private IModel _channel;
 
         private ILoggerService _logger;
-        private IConfigurationManager _configurationManager;
+        private IAppConfigManager _configurationManager;
 
         public MessageQueuePublisherService(
             ILoggerService logger,
-            IConfigurationManager configurationManager
+            IAppConfigManager configurationManager
         )
         {
             _logger = logger;

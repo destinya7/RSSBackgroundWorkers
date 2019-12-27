@@ -28,8 +28,8 @@ namespace RSSFetcherService.Startup
             containerBuilder.RegisterType<ArticleMessageConverter>()
                 .As<IArticleMessageConverter>();
 
-            containerBuilder.RegisterType<ConfigurationManager>()
-                .As<IConfigurationManager>();
+            containerBuilder.RegisterType<AppConfigManager>()
+                .As<IAppConfigManager>();
 
             containerBuilder.RegisterType<HttpRSSClient>()
                 .As<IHttpRSSClient>();

@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Configuration;
 
 namespace RSSFetcherService.Config
 {
-    public class ConfigurationManager : IConfigurationManager
+    public class AppConfigManager : IAppConfigManager
     {
         private const string WorkerQueueUsername = "RSS_WQ_USER";
         private const string WorkerQueuePassword = "RSS_WQ_PASS";
@@ -39,9 +40,9 @@ namespace RSSFetcherService.Config
             };
         }
 
-        private string GetEnvironmentVariable(string message)
+        private string GetEnvironmentVariable(string key)
         {
-            return Environment.GetEnvironmentVariable(message);
+            return ConfigurationManager.AppSettings[key];
         }
     }
 }
