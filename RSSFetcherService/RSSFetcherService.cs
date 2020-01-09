@@ -37,13 +37,13 @@ namespace RSSFetcherService
 
         protected override void OnStart(string[] args)
         {
-            _logger.Debug("Service Start " + DateTime.Now);
+            _logger.Info("Service Start " + DateTime.Now);
             SetupConnectionToQueues();
         }
 
         protected override void OnStop()
         {
-            _logger.Debug("Service Stopped " + DateTime.Now);
+            _logger.Info("Service Stopped " + DateTime.Now);
             CloseConnectionToQueues();
         }
 
@@ -54,23 +54,23 @@ namespace RSSFetcherService
 
             try
             {
-                _logger.Debug($"Message Received: {message}. Fetching channel");
+                _logger.Info($"Message Received: {message}. Fetching channel");
 
                 Channel channel = await _fetcherCore.FetchChannel(message);
 
-                _logger.Debug($"Done Fetching Channel");
+                _logger.Info($"Done Fetching Channel");
 
-                _logger.Debug($"Sent Acknowledgement for {message}. Publishing Channel Updates");
+                _logger.Info($"Sent Acknowledgement for {message}. Publishing Channel Updates");
 
                 PublishArticles(channel.Articles);
 
                 _consumerService.Channel.BasicAck(e.DeliveryTag, false);
 
-                _logger.Debug($"Channel Updates Sent");
+                _logger.Info($"Channel Updates Sent");
             }
             catch (Exception ex)
             {
-                _logger.Debug(ex.ToString());
+                _logger.Error(ex.ToString());
             }
         }
 
@@ -81,7 +81,7 @@ namespace RSSFetcherService
                 var jsonString =
                     _articleMessageConverter.SerializeJson(article);
 
-                _logger.Debug($"Sending Article {jsonString}");
+                _logger.Info($"Sending Article {jsonString}");
 
                 _publisherService.PublishMessage(jsonString);
             }
@@ -89,25 +89,25 @@ namespace RSSFetcherService
 
         private void SetupConnectionToQueues()
         {
-            _logger.Debug("Setting up connections to queue");
+            _logger.Info("Setting up connections to queue");
             _consumerService.SetupConnection();
-            _logger.Debug("Done setting connection to worker queue");
+            _logger.Info("Done setting connection to worker queue");
             _publisherService.SetupConnection();
-            _logger.Debug("Done setting connection to message queue");
+            _logger.Info("Done setting connection to message queue");
             _consumerService.Consumer.Received += OnMessageReceived;
-            _logger.Debug("Done attaching listener for worker queue");
+            _logger.Info("Done attaching listener for worker queue");
             _consumerService.StartListening();
-            _logger.Debug("Starting to listen");
-            _logger.Debug("Done setting up connections to queue");
+            _logger.Info("Starting to listen");
+            _logger.Info("Done setting up connections to queue");
         }
 
         private void CloseConnectionToQueues()
         {
-            _logger.Debug("Closing connections to queue");
+            _logger.Info("Closing connections to queue");
             _consumerService.Consumer.Received -= OnMessageReceived;
             _consumerService.CloseConnection();
             _publisherService.CloseConnection();
-            _logger.Debug("Done closing connections to queue");
+            _logger.Info("Done closing connections to queue");
         }
     }
 }

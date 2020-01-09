@@ -112,7 +112,7 @@
     <Compile Include="Utils\IArticleMessageConverter.cs" />
     <Compile Include="Utils\IMessageConverter.cs" />
     <Compile Include="Utils\IRSSParser.cs" />
-    <Compile Include="Services\LoggerService.cs" />
+    <Compile Include="Services\WindowsEventLoggerService.cs" />
     <Compile Include="Utils\MessageConverter.cs" />
     <Compile Include="Utils\RSSParser.cs" />
   </ItemGroup>

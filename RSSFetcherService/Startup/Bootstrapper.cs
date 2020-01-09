@@ -31,10 +31,10 @@ namespace RSSFetcherService.Startup
             containerBuilder.RegisterType<AppConfigManager>()
                 .As<IAppConfigManager>();
 
+            containerBuilder.RegisterInstance(new WindowsEventLoggerService())
+                .As<ILoggerService>().SingleInstance();
             containerBuilder.RegisterType<HttpRSSClient>()
                 .As<IHttpRSSClient>();
-            containerBuilder.RegisterType<LoggerService>()
-                .As<ILoggerService>().SingleInstance();
             containerBuilder.RegisterType<WorkerQueueConsumerService>()
                 .As<IWorkerQueueConsumerService>().SingleInstance();
             containerBuilder.RegisterType<MessageQueuePublisherService>()
