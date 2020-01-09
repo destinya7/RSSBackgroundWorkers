@@ -8,7 +8,7 @@ namespace RSSCollectorService.Services
         {
             if (!EventLog.SourceExists(SourceName))
             {
-                EventLog.CreateEventSource(SourceName, "RSSFetcherServiceLog");
+                EventLog.CreateEventSource(SourceName, "RSSCollectorServiceLog");
             }
         }
 
