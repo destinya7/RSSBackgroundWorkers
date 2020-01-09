@@ -21,14 +21,13 @@ namespace RSSCollectorService.Core
             _logger = logger;
         }
 
-        public async void CollectUrls()
+        public void CollectUrls()
         {
             try
             {
                 _logger.Debug("Fetching Channels in repo");
 
-                var channels =
-                    await _channelRepository.GetChannelsLastUpdatedWithin(60);
+                var channels = _channelRepository.GetChannelsLastUpdatedWithin(60);
 
                 _logger.Debug("Done fetching Channels in repo");
 

@@ -39,7 +39,7 @@ namespace RSSFetcherService.Core
             {
                 _logger.Debug($"Fetching channel for url {url}");
 
-                channel = await _channelRepository.GetChannelByURL(url);
+                channel = await _channelRepository.GetByUrl(url);
 
                 _logger.Debug($"Done fetching channel for url {url}");
 
@@ -55,8 +55,8 @@ namespace RSSFetcherService.Core
 
                     _logger.Debug($"Done parsing xml. Inserting new channel for url {url}");
                     channel.RSS_URL = url;
-                    _channelRepository.Insert(channel);
-                    await _channelRepository.Save();
+                    await _channelRepository.Add(channel);
+                    //await _channelRepository.Save();
 
                     _logger.Debug($"Done Inserting saving new channel for url {url}");
                 }
@@ -97,38 +97,38 @@ namespace RSSFetcherService.Core
             oldChannel.Link = updatedChannel.Link;
             oldChannel.ChannelImage = updatedChannel.ChannelImage;
 
-            _channelRepository.Update(oldChannel);
+            await _channelRepository.Update(oldChannel);
 
-            foreach (var article in updatedChannel.Articles)
+            if (updatedChannel.Articles != null)
             {
-                var existingArticle =
-                    await _articleRepository.GetArticleByURL(article.Link);
-                
-                if(existingArticle == null)
+                foreach (var article in updatedChannel.Articles)
                 {
-                    article.ChannelId = oldChannel.Id;
-                    article.Channel = oldChannel;
+                    var existingArticle =
+                        await _articleRepository.GetByUrl(article.Link);
 
-                    _articleRepository.Insert(article);
-                    newArticles.Add(article);
+                    if (existingArticle == null)
+                    {
+                        article.ChannelId = oldChannel.Id;
+                        article.Channel = oldChannel;
 
-                    _logger.Debug($"New Article with url {article.Link} Created");
-                }
-                else
-                {
-                    existingArticle.Title = article.Title;
-                    existingArticle.Description = article.Description;
-                    existingArticle.PubDate = article.PubDate;
+                        await _articleRepository.Add(article);
+                        newArticles.Add(article);
 
-                    _articleRepository.Update(existingArticle);
-                    newArticles.Add(existingArticle);
+                        _logger.Debug($"New Article with url {article.Link} Created");
+                    }
+                    else
+                    {
+                        existingArticle.Title = article.Title;
+                        existingArticle.Description = article.Description;
+                        existingArticle.PubDate = article.PubDate;
 
-                    _logger.Debug($"Article with url {article.Link} Updated");
+                        await _articleRepository.Update(existingArticle);
+                        newArticles.Add(existingArticle);
+
+                        _logger.Debug($"Article with url {article.Link} Updated");
+                    }
                 }
             }
-
-            await _articleRepository.Save();
-            await _channelRepository.Save();
 
             updatedChannel.Articles = newArticles;
 
