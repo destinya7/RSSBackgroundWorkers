@@ -15,6 +15,7 @@ namespace RSSFetcherService.Config
         private const string MessageQueueHostname = "RSS_WQ_HOST";
         private const string MessageQueuePort = "RSS_WQ_PORT";
         private const string MessageQueueName = "RSS_WQ_NAME";
+        private const string LogSourceName = "LOG_SOURCE_NAME";
 
         public QueueVariable GetWorkerQueueEnvironmentVariable()
         {
@@ -38,6 +39,11 @@ namespace RSSFetcherService.Config
                 Password = GetEnvironmentVariable(MessageQueuePassword),
                 QueueName = GetEnvironmentVariable(MessageQueueName)
             };
+        }
+
+        public string GetLogSourceName()
+        {
+            return GetEnvironmentVariable(LogSourceName);
         }
 
         private string GetEnvironmentVariable(string key)

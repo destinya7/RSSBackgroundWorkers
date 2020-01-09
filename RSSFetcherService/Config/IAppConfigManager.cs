@@ -5,5 +5,7 @@
         QueueVariable GetWorkerQueueEnvironmentVariable();
 
         QueueVariable GetMessageQueueEnvironmentVariable();
+
+        string GetLogSourceName();
     }
 }
