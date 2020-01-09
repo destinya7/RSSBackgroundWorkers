@@ -25,7 +25,7 @@ namespace RSSCollectorService.Core
         {
             try
             {
-                _logger.Debug("Fetching Channels in repo");
+                _logger.Info("Fetching Channels in repo");
 
                 var channels = _channelRepository.GetChannelsLastUpdatedWithin(60);
 
@@ -33,15 +33,15 @@ namespace RSSCollectorService.Core
 
                 foreach (var channel in channels)
                 {
-                    _logger.Debug($"Publishing {channel.RSS_URL}");
+                    _logger.Info($"Publishing {channel.RSS_URL}");
 
                     _workerQueuePublisher.PublishMessage(channel.RSS_URL);
 
-                    _logger.Debug($"Published {channel.RSS_URL}");
+                    _logger.Info($"Published {channel.RSS_URL}");
                 }
             } catch (Exception e)
             {
-                _logger.Debug($"Error Collecting Urls {e.ToString()}");
+                _logger.Info($"Error Collecting Urls {e.ToString()}");
             }
         }
     }

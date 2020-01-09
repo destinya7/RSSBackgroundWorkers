@@ -24,8 +24,8 @@ namespace RSSCollectorService.Startup
 
             containerBuilder.RegisterType<WorkerQueuePublisher>()
                 .As<IWorkerQueuePublisher>().SingleInstance();
-            containerBuilder.RegisterType<LoggerService>()
-                .As<ILoggerService>();
+            containerBuilder.RegisterInstance(new WindowsEventLoggerService())
+                .As<ILoggerService>().SingleInstance();
 
             containerBuilder.RegisterType<AppConfigManager>()
                 .As<IAppConfigManager>();

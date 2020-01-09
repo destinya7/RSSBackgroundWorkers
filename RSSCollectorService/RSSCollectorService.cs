@@ -30,7 +30,7 @@ namespace RSSCollectorService
 
         protected override void OnStart(string[] args)
         {
-            _logger.Debug("Service Started");
+            _logger.Info("Service Started");
 
             _publisherService.SetupConnection();
 
@@ -42,14 +42,14 @@ namespace RSSCollectorService
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _logger.Debug("Collecting Urls");
+            _logger.Info("Collecting Urls");
             _collectorCore.CollectUrls();
-            _logger.Debug("Done Collecting Urls");
+            _logger.Info("Done Collecting Urls");
         }
 
         protected override void OnStop()
         {
-            _logger.Debug("Service Stopped");
+            _logger.Info("Service Stopped");
             _timer.Stop();
         }
     }
