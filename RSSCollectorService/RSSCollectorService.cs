@@ -34,6 +34,8 @@ namespace RSSCollectorService
 
             _publisherService.SetupConnection();
 
+            StartCollecting();
+
             _timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
             _timer.Interval = 30000;
             _timer.Enabled = true;
@@ -42,15 +44,20 @@ namespace RSSCollectorService
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _logger.Info("Collecting Urls");
-            _collectorCore.CollectUrls();
-            _logger.Info("Done Collecting Urls");
+            StartCollecting();
         }
 
         protected override void OnStop()
         {
             _logger.Info("Service Stopped");
             _timer.Stop();
+        }
+
+        private void StartCollecting()
+        {
+            _logger.Info("Collecting Urls");
+            _collectorCore.CollectUrls();
+            _logger.Info("Done Collecting Urls");
         }
     }
 }
