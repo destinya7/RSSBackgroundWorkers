@@ -54,10 +54,16 @@ namespace RSSFetcherService.Core
                     channel = _rssParser.ParseRSS(xmlString);
 
                     _logger.Info($"Done parsing xml. Inserting new channel for url {url}");
-                    channel.RSS_URL = url;
-                    await _channelRepository.Add(channel);
 
-                    _logger.Info($"Done Inserting saving new channel for url {url}");
+                    channel.RSS_URL = url;
+                    
+                    var result = await _channelRepository.Add(channel);
+
+                    _logger.Info($"Done Inserting saving new channel for url {url} "
+                        + $" Status: {result.Status.ToString()}");
+
+                    if (result.Exception != null)
+                        _logger.Error(result.Exception.ToString());
                 }
                 else if (DateTime.Now.Subtract(channel.DateModified) >
                     TimeSpan.FromHours(1.0))
