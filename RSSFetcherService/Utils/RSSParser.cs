@@ -42,7 +42,7 @@ namespace RSSFetcherService.Utils
                         Link = item.Links.Count > 0
                             ? item.Links[0].Uri.AbsoluteUri
                             : string.Empty,
-                        PubDate = item.PublishDate.UtcDateTime
+                        PubDate = DateTime.UtcNow
                     };
                     channel.Articles.Add(article);
                 }
